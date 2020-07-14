@@ -1,25 +1,29 @@
 import React from 'react'
-import App from './App'
+import ThemeContext from "../theme"
+
 
 export default class AppContainer extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state = { darkMode: false }
-	}
 
-	toggleDarkMode() {
+    setTheme = () => {
+        let theme = (this.state.theme === 'light' ? 'dark-mode' : 'light')
+        this.setState({ theme })
+    };
 
-		this.setState(state => ({
-			darkMode: !this.state.darkMode
-		}))
-	}
+    state = {
+        theme: "light",
+        setTheme: this.setTheme
+    };
 
-	render() {
-		return (
-			<div className={`app-container ${this.state.darkMode ? 'dark-mode' : ''}`}>
-				<App toggleDarkMode={this.toggleDarkMode.bind(this)} darkMode={this.state.darkMode} />
-			</div>
-		)
-	}
+    render() {
+        const { children } = this.props
+
+        return (
+            <ThemeContext.Provider value={this.state}>
+                <div className={`app-container ${this.state.theme}`}>
+                    {children}
+                </div>
+            </ThemeContext.Provider>
+        )
+    }
 
 }
